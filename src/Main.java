@@ -1,39 +1,42 @@
+import java.util.List;
+
 public class Main {
 
-    public static final String[] CITIES = {"Londes", "Madrid", "Nueva York", "Buenos Aires", "Asuncíon", "São Paulo",
-            "Lima", "Santiado de Chile", "Lisboa", "Tokio"};
+    private static void searchTemperatures(List<City> cities) {
+        if (cities.isEmpty()) {
+            return;
+        }
 
-    public static final int[][] TEMPERATURES = {
-            {-2, 33},
-            {-3, 32},
-            {-8, 27},
-            {4, 37},
-            {6, 42},
-            {5, 43},
-            {0, 39},
-            {-7, 26},
-            {-1, 31},
-            {-10, 35}
-    };
+        City hottestCity = cities.get(0), coldestCity = cities.get(0);
 
-    private static void searchTemperatures() {
-        int coldestCityIndex = 0, hottestCityIndex = 0;
-
-        for (int i = 0; i < CITIES.length; i++) {
-            if (TEMPERATURES[i][0] < TEMPERATURES[coldestCityIndex][0]) {
-                coldestCityIndex = i;
+        for (City city: cities) {
+            if (city.getMaxTemperature() > hottestCity.getMaxTemperature()) {
+                hottestCity = city;
             }
 
-            if (TEMPERATURES[i][1] > TEMPERATURES[hottestCityIndex][1]) {
-                hottestCityIndex = i;
+            if (city.getMinTemperature() < coldestCity.getMinTemperature()) {
+                coldestCity = city;
             }
         }
 
-        System.out.println(String.format("Cidade mais fria: %s com %d graus", CITIES[coldestCityIndex], TEMPERATURES[coldestCityIndex][0]));
-        System.out.println(String.format("Cidade mais quente: %s com %d graus", CITIES[hottestCityIndex], TEMPERATURES[hottestCityIndex][1]));
+        System.out.println(String.format("Cidade mais fria: %s com %d graus", coldestCity.getName(), coldestCity.getMinTemperature()));
+        System.out.println(String.format("Cidade mais quente: %s com %d graus", hottestCity.getName(), hottestCity.getMaxTemperature()));
     }
 
     public static void main(String[] args) {
-        searchTemperatures();
+        List<City> cities = List.of(
+                new City("Londres", -2, 33),
+                new City("Madrid", -3, 32),
+                new City("Nueva York", -8, 27),
+                new City("Buenos Aires", 4, 37),
+                new City("Asúncion", 6, 42),
+                new City("São Paulo", 5, 43),
+                new City("Lima", 8, 39),
+                new City("Santiado de Chile", -7, 26),
+                new City("Lisboa", -1, 31),
+                new City("Tokio", -10, 35)
+        );
+
+        searchTemperatures(cities);
     }
 }
